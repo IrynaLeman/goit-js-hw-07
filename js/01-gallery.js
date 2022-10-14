@@ -77,31 +77,34 @@ console.log(galleryEl);
 
 galleryEl.addEventListener('click', onImgClick);
 
+let instance;
+
 function onImgClick(e) {
   e.preventDefault();
   if (e.target.nodeName !== 'IMG') {
     return
   }
   const currentImg = e.target;
-  const instance = basicLightbox.create(
+  instance = basicLightbox.create(
     `
   <img src='${currentImg.dataset.source}' width='800' height='600'>
   `,
     {
-      onShowModal: () => {
+      onShow: () => {
         document.addEventListener('keydown', closeModal);
       },
-      onCloseModal: () => {
+      onClose: () => {
         document.removeEventListener('keydown', closeModal);
       },
-    }
+    },
   );
-  instance.show();
-
+  
   function closeModal(e) {
     if (e.key === 'Escape') {
       instance.close();
       console.log(e.key);
     }
   }
+  instance.show();
 }
+
