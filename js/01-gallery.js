@@ -51,7 +51,6 @@ source на элементе <img>, и указываться в href ссылк
 */
 
 const galleryEl = document.querySelector('.gallery');
-//console.log(gallery);
 function creareGallery(items) {
   return items
     .map(
@@ -77,32 +76,32 @@ galleryEl.innerHTML = addGallery;
 console.log(galleryEl);
 
 galleryEl.addEventListener('click', onImgClick);
+
 function onImgClick(e) {
-  blockStandartAction(e);
+  e.preventDefault();
   if (e.target.nodeName !== 'IMG') {
     return
   }
-
-  const instance = basicLightbox.create(`
-  <img src='${e.target.dataset.source}' width='800' height='600'>
-  `);
-  instance.show;
-
-  galleryEl.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      console.log('close modal')
-      instance.close();
+  const currentImg = e.target;
+  const instance = basicLightbox.create(
+    `
+  <img src='${currentImg.dataset.source}' width='800' height='600'>
+  `,
+    {
+      onShowModal: () => {
+        document.addEventListener('keydown', closeModal);
+      },
+      onCloseModal: () => {
+        document.removeEventListener('keydown', closeModal);
+      },
     }
-  })
-}
+  );
+  instance.show();
 
-function blockStandartAction(e) {
-  e.preventDefault();
-  };
-
-/*addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    console.log('close modal')
-    instance.close();
+  function closeModal(e) {
+    if (e.key === 'Escape') {
+      instance.close();
+      console.log(e.key);
+    }
   }
-})*/
+}

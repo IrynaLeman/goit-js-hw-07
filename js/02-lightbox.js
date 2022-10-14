@@ -2,6 +2,32 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
 console.log(galleryItems);
+
+const galleryEl = document.querySelector('.gallery');
+function creareGallery(items) {
+  return items
+    .map(
+      (item) =>
+        `
+        <a class="gallery__item" href="${item.original}">
+          <img class="gallery__image" src="${item.preview}" alt="${item.description}"/>
+        </a>
+        `
+    )
+    .join('');
+}
+
+const addGallery = creareGallery(galleryItems);
+galleryEl.innerHTML = addGallery;
+//console.log(galleryEl);
+
+
+new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+});
+
 /*
 Сделай такую же галерею как в первом задании, но используя библиотеку 
 SimpleLightbox, которая возьмет на себя обработку кликов по 
